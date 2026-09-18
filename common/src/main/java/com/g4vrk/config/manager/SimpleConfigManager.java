@@ -1,8 +1,8 @@
-package com.g4vrk.functionalConfiguration.manager;
+package com.g4vrk.config.manager;
 
-import com.g4vrk.functionalConfiguration.Config;
-import com.g4vrk.functionalConfiguration.NamedConfigEntry;
+import com.g4vrk.config.Config;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -18,59 +18,77 @@ public class SimpleConfigManager<C extends Config> implements ConfigManager<C> {
 
     @Override
     public void register(
-             @NotNull NamedConfigEntry<C> namedConfigEntry
+            @NotNull String key,
+            @NotNull C config
     ) {
-        this.configs.put(namedConfigEntry.name(), namedConfigEntry.config());
+
+        this.configs.put(key, config);
+
     }
 
     @Override
-    public void registerAll(@NotNull Iterable<NamedConfigEntry<C>> namedConfigEntries) {
-        namedConfigEntries.forEach(this::register);
-    }
-
-    @Override
-    public void unregister(
-            @NotNull String name
+    public void registerAll(
+            @NotNull Map<String, C> configs
     ) {
-        this.configs.remove(name);
+
+        this.configs.putAll(configs);
+
     }
 
     @Override
-    public boolean hasConfig(
-            @NotNull String name
-    ) {
-        return this.configs.containsKey(name);
+    public @Nullable C remove(@NotNull String key) {
+
+        return this.configs.remove(key);
+
     }
 
     @Override
-    public @NotNull Optional<C> getConfig(
-            @NotNull String name
-    ) {
-        return Optional.ofNullable(this.configs.get(name));
+    public boolean contains(@NotNull String key) {
+
+        return this.configs.containsKey(key);
+
     }
 
     @Override
-    public @NotNull Collection<C> getAll() {
+    public @NotNull Optional<C> find(@NotNull String key) {
+        return Optional.ofNullable(this.findOrNull(key));
+    }
+
+    @Override
+    public @Nullable C findOrNull(@NotNull String key) {
+        return this.configs.get(key);
+    }
+
+    @Override
+    public @NotNull Collection<C> values() {
         return Collections.unmodifiableCollection(this.configs.values());
     }
 
     @Override
     public void loadAll() throws IOException {
+
         for (final C config : this.configs.values()) {
+
             config.load();
+
         }
+
     }
 
     @Override
     public void saveAll() throws IOException {
+
         for (final C config : this.configs.values()) {
+
             config.save();
+
         }
+
     }
 
     @Override
     public @NotNull Iterator<C> iterator() {
-        return getAll().iterator();
+        return values().iterator();
     }
 
 }

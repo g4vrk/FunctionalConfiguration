@@ -1,4 +1,4 @@
-package com.g4vrk.functionalConfiguration;
+package com.g4vrk.config;
 
 import org.jetbrains.annotations.NotNull;
 
