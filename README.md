@@ -34,7 +34,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.g4vrk.FunctionalConfiguration:common:1.1.0")
+    implementation("com.github.g4vrk:FunctionalConfiguration:1.1.0")
 }
 ```
 
@@ -56,7 +56,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.g4vrk.FunctionalConfiguration:common:1.1.0'
+    implementation 'com.github.g4vrk:FunctionalConfiguration:1.1.0'
     implementation 'org.spongepowered:configurate-yaml:4.2.0'
 }
 ```
